@@ -1,0 +1,32 @@
+{% extends "ask/baseuser.html" %}
+
+{% block content %}
+    {% for q in questions %}
+        <div class="container">
+                        <div class="col-sm-9 panel panel-default">
+                          <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-2 col-xs-3">
+                                    <img src="http://lorempixel.com/57/57/" class="img-circle member-img min-image">
+                                    <div class="row">
+                                    <button type="button" class="btn btn-default like-btn">
+                                    <span class="glyphicon glyphicon-heart-empty"></span>Like <span class="badge">8</span>
+                                    </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10 col-xs-9">
+                                    <a href="#"><h4>How to get on with Bootstrap?</h4></a>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>Nullam ultricies pretium...</p>
+                                    <button  class="btn-link pull-left">Answer(3)</button>
+                                    <div class="pull-right">
+                                        <strong>Tags:</strong>
+                                        <button  class="btn-link">inspiration</button>
+                                        <button  class="btn-link">Bootstrap</button>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+</div>
+    {% endfor %}
+{% endblock %}

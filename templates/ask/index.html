@@ -1,0 +1,100 @@
+{% extends "ask/base.html" %}
+
+{% block content %}
+      <div class="col-sm-8 container" style="margin-left: 20px;">
+    {% block information %}{% endblock %}
+    {% for q in questions %}
+        <div class="container">{{ error }}
+                        <div class="col-sm-9 panel panel-default">
+                          <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-2 col-xs-3">
+				{% if q.user.profile.avatar %}
+                                    <img src="{{ q.user.profile.avatar.url }}" class="img-circle member-img min-image my-avatar">
+				{% endif %}
+                                    <div class="row">
+                                    <button onclick="like({{ q.id }}, 1, 'question')" type="button" class="btn btn-default like-btn">
+                                    <span class="glyphicon glyphicon-heart-empty"></span>Like <span class="badge"><div id = "like{{ q.id }}">{{ q.rating }}</div></span>
+                                    </button>
+				    <button onclick="like({{ q.id }}, -1, 'question')" type="button" class="btn btn-default"> :( </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10 col-xs-9">
+                                    <a href={% url 'question' q.id %}><h4>{{ q.title }}</h4></a>
+                                    <p>{{ q.text }}</p>
+                                    <a href={% url 'question' q.id %}><button  class="btn-link pull-left">Answer({{ q.answer_set.count }})</button></a>
+                                    <div class="pull-right">
+                                        <strong>Tags:</strong>
+					{% for t in q.tags.all %}
+                                        <a href={% url 'tag' t.name %}><button  class="btn-link">{{ t.name }}</button></a>
+					{% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+	</div>
+    {% endfor %}
+
+    {% if questions.paginator.num_pages > 1 %}
+	<!--div class="row">
+            <div class="col-xs-offset-4">
+                <nav>
+                  <ul class="pagination pages">
+                    <li><a href="{% url 'index' 1 %}">1</a></li>
+                    {% if questions.number > 3 %}<li><a>...</a></li>{% endif %}
+                    {% if page > 2 %}<li><a href="{% url 'index' page.previous_page_number %}">{{ questions.previous_page_number }}</a></li>{% endif %}
+                    {% if page < question.paginator.num_page %}<li><a href="{% url 'index' page %}">{{ page }}</a></li>{% endif %}
+                    {% if page < questions.paginator.num_pages %}<li><a href="{% url 'index' questions.next_page_number %}">{{ questions.next_page_number }}</a></li>{% endif %}
+		    {% if questions.next_page_number < questions.paginator.num_pages %}<li><a>...</a></li>{% endif %}
+		    {% if page < questions.paginator.num_pages %} <li><a href="{% url 'index' questions.next_page_number %}">{{ questions.paginator.num_pages }}</a></li>{% endif %}
+                   
+                  </ul>
+                </nav>
+            </div>
+        </div-->
+     {% endif %}
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+        $.ajaxSetup({ 
+             beforeSend: function(xhr, settings) {
+                 function getCookie(name) {
+                     var cookieValue = null;
+                     if (document.cookie && document.cookie != '') {
+                         var cookies = document.cookie.split(';');
+                         for (var i = 0; i < cookies.length; i++) {
+                             var cookie = jQuery.trim(cookies[i]);
+                             // Does this cookie string begin with the name we want?
+                         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                             break;
+                         }
+                     }
+                 }
+                 return cookieValue;
+                 }
+                 if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                     // Only send the token to relative URLs i.e. locally.
+                     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                 }
+             } 
+        });
+       function like(objectId, likeType, objectType) {
+            $.ajax({
+                url : "{% url 'like' %}",
+                type : "POST",
+                data : { like_type : likeType,
+                         object_id : objectId,
+                         object_type : objectType
+                        },
+                success : function(data) {
+                    $('#like'+objectId).text(data.new_rating);
+                    if (data.error) {
+                        alert(data.error);
+                    }
+                } 
+            });
+        };
+</script>
+{% endblock %}

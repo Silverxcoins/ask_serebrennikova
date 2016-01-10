@@ -1,0 +1,22 @@
+{% extends "ask/base.html" %}
+
+{% block content %}
+	<div class="col-sm-9 reg">
+                  <form class="form-horizontal  col-sm-offset-1" method="POST">
+		    {% csrf_token %}
+                    <h3>Log In</h3>
+                    <div class="form-group">
+                      <label for="username" class="col-sm-2 control-label">Login</label>
+                      <div class="col-sm-8"><input type="text" name="username" id="username" required class="form-control" placeholder="Your login"></div>
+                    </div>
+                    <div class="form-group">
+                      <label for="pass" class="col-sm-2 control-label">Password</label>
+                      <div class="col-sm-8"><input type="password" name="password" id="password" required class="form-control" placeholder="Your password"></div>
+                    </div>
+			{% if error %}<div class="alert alert-danger" role ="alert" id="field-error">{{ error }}</div><br> {% endif %}
+                    <div class="col-sm-10">
+                      <a href={% url 'signup' %}>create new account</a>
+                      <button class="btn btn-info pull-right" type="submit">Log In!</button>
+                    </div>
+                  </form>
+{% endblock %}

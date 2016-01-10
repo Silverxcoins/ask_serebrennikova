@@ -1,0 +1,83 @@
+.navbar-collapse {
+    margin-top: 20px;
+}
+
+.navbar-brand {
+    margin-top: 10px;
+    
+}
+.account-label {
+	margin-top: 20px;
+	font-size: 16px;
+	color: white;
+}
+
+.my-avatar {
+	width: 70px;
+	height: 70px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.nav-label {
+    font-size: 12px;
+}
+
+.no-login {
+    margin-top: 15px;
+}
+
+.account-btn {
+	margin-top: 5px;
+}
+
+.tag {
+	font-size: 24px;
+}
+
+.member-img {
+	margin-bottom: 10px;
+}
+
+.arr {
+    margin: 10px;
+    background-color: black;
+}
+
+.pages {
+    align: center;
+}
+
+.question-author-img {
+    margin-left: 10px;
+    width: 100px;
+    height: 100px;
+}
+
+.question-like {
+    margin-top: 10px;
+    margin-left: 30px;   
+}
+
+.your-answer {
+    margin-bottom: 20px;
+}
+
+.new-ask-btn {
+    width: 100px;
+}
+
+.new-question {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.right-button {
+    opacity: 0.8;
+}
+
+.right-button-text {
+    color: black;
+}
+    
+

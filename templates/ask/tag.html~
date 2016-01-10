@@ -1,0 +1,54 @@
+{% extends "ask/baseuser.html" %}
+
+{% block content %}
+      <div class="col-sm-8 container" style="margin-left: 20px;">
+      <h4>{{ tag }}</h4>
+      {% for q in tag.answer_set.all  %}
+        <div class="container">
+                        <div class="col-sm-9 panel panel-default">
+                          <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-2 col-xs-3">
+                                    <img src="http://lorempixel.com/57/57/" class="img-circle member-img min-image">
+                                    <div class="row">
+                                    <button type="button" class="btn btn-default like-btn">
+                                    <span class="glyphicon glyphicon-heart-empty"></span>Like <span class="badge">8</span>
+                                    </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10 col-xs-9">
+                                    <a href={% url 'question' q.id %}><h4>{{ q.title }}</h4></a>
+                                    <p>{{ q.text }}</p>
+                                    <a href={% url 'question' q.id %}><button  class="btn-link pull-left">Answer({{ q.answer_set.count }})</button></a>
+                                    <div class="pull-right">
+                                        <strong>Tags:</strong>
+					{% for t in q.tags.all %}
+                                        <a href={% url 'tag' t.name %}><button  class="btn-link">{{ t.name }}</button></a>
+					{% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+	</div>
+    {% endfor %}
+	<div class="row">
+            <div class="col-xs-offset-4">
+                <nav>
+                  <ul class="pagination pages">
+                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                    <li class="active"><a href={% url 'index' 1 %}>1<span class="sr-only">(current)</span></a></li>
+                    <li><a href="{% url 'index' 2 %}">2</a></li>
+                    <li><a href="{% url 'index' 3 %}">3</a></li>
+                    <li><a href="{% url 'index' 4 %}">4</a></li>
+                    <li><a href="{% url 'index' 5 %}">5</a></li>
+                    <li>
+                      <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li> 
+                  </ul>
+                </nav>
+            </div>
+        </div>
+{% endblock %}

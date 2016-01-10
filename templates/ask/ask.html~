@@ -1,0 +1,32 @@
+{% extends "ask/base.html" %}
+
+{% block content %}
+	<div class="col-sm-9">
+                <form class="form-horizontal" method="POST">
+		    {% csrf_token %}
+                    <div class="form-group">
+                          <label for="{{ form.title.name }}" class="col-sm-1 control-label">{{ form.title.label }}</label>
+                          <div class="col-sm-11"><input type="text" class="form-control" id="id_title" placeholder="Title" name="title"></div>
+                    </div>
+			{% for error in form.title.errors %}
+                        <div class="alert alert-danger" role ="alert" id="field-error">{{ error }}</div><br>
+                   	{% endfor %}
+                    <div class="form-group">
+                          <label for="{{ form.text.name }}" class="col-sm-1 control-label">{{ form.text.label }}</label>
+                          <div class="col-sm-11" id="form-2-field"><textarea class="form-control" id="id_text" name="text"rows="10" placeholder="Your question"></textarea>
+                          </div>
+                    </div>
+			{% for error in form.text.errors %}
+                        <div class="alert alert-danger" role ="alert" id="field-error">{{ error }}</div><br>
+                   	{% endfor %}
+                    <div class="form-group">
+                          <label for="{{ form.tags.name }}" class="col-sm-1 control-label">Tags</label>
+                              <div class="col-sm-11" id="form-3-field"><input type="text" id="id_tags" name="tags" class="form-control" placeholder="Question tags"></div>
+                    </div>
+			{% for error in form.tags.errors %}
+                        <div class="alert alert-danger" role ="alert" id="field-error">{{ error }}</div><br>
+                   	{% endfor %}
+                    <button class="btn btn-info new-ask-btn pull-right" type="submit">Ask!</button>
+                </form>
+                <br>
+{% endblock %}

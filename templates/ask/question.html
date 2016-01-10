@@ -1,0 +1,138 @@
+{% extends "ask/base.html" %}
+
+{% block content %}
+    <div class="col-sm-8 container" style="margin-left: 20px;">
+            <div class="row">
+                <div class="col-md-2 col-sm-3 col-xs-3">
+		{% if question.user.profile.avatar %}
+                    <img src="{{ question.user.profile.avatar.url }}" class="img-circle question-author-img">
+                {% endif %}
+                    <br>
+                    <div class="row">
+                        <button onclick="like({{ question.id }}, 1, 'question')" type="button" class="btn btn-default question-like">
+                            <span class="glyphicon glyphicon-heart-empty"></span>Like <span class="badge"><div  id = "like{{ question.id }}">{{ question.rating }}</div></span>
+                        </button>
+			<button onclick="like({{ question.id }}, -1, 'question')" type="button" class="btn btn-default question-like"> :( </button>
+                    </div>
+                </div>
+                <div class="col-md-10 col-sm-9 col-xs-9">
+                    <a href="#">{{ question.user }}</a> asks:
+                    <h4>{{ question.title }}</h4>
+                    {{ question.text }}<br><br>
+                    <strong>Tags:</strong>
+                    {% for t in question.tags.all %}
+                          <a href={% url 'tag' t.name %}><button  class="btn-link">{{ t.name }}</button></a>
+		    {% endfor %}
+                </div>
+            </div>
+            <hr></hr>
+                            
+                <div class="container">
+		{% for a in answers %}
+                        <div class="col-sm-9 panel panel-default">
+                          <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-2 col-xs-3">
+{% if a.user.profile.avatar %}
+                                    <img src="{{ a.user.profile.avatar.url }}" class="img-circle member-img my-avatar min-image">
+{% endif %}
+                                </div>
+                                <div class="col-sm-10 col-xs-9">
+                                    <p>{{ a.text }} </p>
+                                    <div class="checkbox pull-right">
+                                        
+{% if user == question.user %}
+					<label>
+                                          <input type="checkbox" onclick="like({{a.id}}, 1, 'answer')" {% if a.correct %} checked {% endif %}> Right answer
+                                        </label>
+{% else %}
+	{% if a.correct %}
+	<label> Right answer </label>
+	{% endif %}
+{% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+		{% endfor %}
+</div>
+
+<!--div class="row">
+            <div class="col-xs-offset-4">
+                <nav>
+                  <ul class="pagination pages pagination-sm" >
+                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                    <li class="active"><a href="1/">1<span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                      <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li> 
+                  </ul>
+                </nav>
+            </div>
+        </div-->
+
+<div class="container">
+                    <div class="row">
+<form class="form-horizontal  col-sm-offset-1" method="POST">
+		    {% csrf_token %}
+    <div class="form-group">
+                        <div class="container  col-sm-8">
+                            <textarea class="form-control your-answer id="id_{{ form.text.name }}" name="{{ form.text.name }}" rows="5" placeholder="Your answer"></textarea>
+                            <button type="submit" class="btn btn-info like-btn pull-right">Answer!</button>
+                        </div>
+    </div>
+</form>
+                    </div>
+                </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+        $.ajaxSetup({ 
+             beforeSend: function(xhr, settings) {
+                 function getCookie(name) {
+                     var cookieValue = null;
+                     if (document.cookie && document.cookie != '') {
+                         var cookies = document.cookie.split(';');
+                         for (var i = 0; i < cookies.length; i++) {
+                             var cookie = jQuery.trim(cookies[i]);
+                             // Does this cookie string begin with the name we want?
+                         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                             break;
+                         }
+                     }
+                 }
+                 return cookieValue;
+                 }
+                 if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                     // Only send the token to relative URLs i.e. locally.
+                     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                 }
+             } 
+        });
+       function like(objectId, likeType, objectType) {
+            $.ajax({
+                url : "{% url 'like' %}",
+                type : "POST",
+                data : { like_type : likeType,
+                         object_id : objectId,
+                         object_type : objectType
+                        },
+                success : function(data) {
+                    $('#like'+objectId).text(data.new_rating);
+                    if (data.error) {
+                        alert(data.error);
+                    }
+                } 
+            });
+        };
+</script>
+{% endblock %}

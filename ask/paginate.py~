@@ -1,0 +1,12 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage
+import json
+
+def paginate(objects_list, request, objects_on_page, page):
+    paginator = Paginator(objects_list, objects_on_page)
+    try:
+        list_on_page = paginator.page(page or 1)
+    except EmptyPage:
+        list_on_page = paginator.page(1)
+    return list_on_page
