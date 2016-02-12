@@ -1,5 +1,0 @@
-{% extends "ask/index.html" %}
-
-{% block information %}
-    <h4>Hot Questions</h4>
-{% endblock %}
